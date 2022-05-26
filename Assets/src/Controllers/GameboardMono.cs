@@ -7,8 +7,6 @@ namespace src.Controllers
     {
         public GameboardDataMono gameboardData;
         public Camera mainCamera;
-        public GameObject boardMono;
-        public Vector3 point;
         public GameObject cube;
         private float cellSize;
         private float height;
@@ -16,50 +14,74 @@ namespace src.Controllers
 
         private void Awake()
         {
-            width = gameboardData.GetBoardWidth();
-            height = gameboardData.GetBoardHeight();
+            width = gameboardData.BoardWidth;
+            height = gameboardData.BoardHeight;
             cellSize = height / gameboardData.rowCount;
         }
 
-        private void Update()
-        {
-            
-        }
+        private void Update() { }
 
         private void FixedUpdate()
         {
-            if (Input.GetMouseButtonDown(0))
+            //if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                bool raycast = Raycast(ray, out Vector3 clickedCell);
-                if (raycast)
+                (bool isRaycastSuccesfull, BoardCell cell) = TryGetBoardCell(ray, gameboardData);
+                if (isRaycastSuccesfull)
                 {
-                    point = clickedCell;
-                    cube.transform.position = clickedCell + new Vector3(0, 1f, 0);
-                    
-                    float positionX = point.x - gameboardData.bottomRight.transform.position.x;
-                    float positionZ = point.z - gameboardData.topRight.transform.position.z;
-                    float columnCount = positionX / 2;
-                    float rowCount = positionZ / 2;
-                    Debug.Log($"point.x : {point.x} - br.x {gameboardData.bottomRight.transform.position.x} = {positionX}");
-                    Debug.Log($"point.z : {point.z} - br.x {gameboardData.topRight.transform.position.z} = {positionX}");
-                    Debug.Log($"{columnCount} = {positionX} / {2}");
-                    Debug.Log($"{rowCount} = {positionZ} / {2}");
-                    Debug.Log("----------------------");
+                    Vector3 worldCoordinate = ConvertToWorldCoordinate(
+                        cell,
+                        gameboardData.bottomRight.position,
+                        gameObject.transform.position.y);
+                    cube.transform.position = worldCoordinate;
                 }
             }
         }
 
-        private static bool Raycast(Ray ray, out Vector3 cell)
+        private static Vector3 ConvertToWorldCoordinate(BoardCell cell, Vector3 bottomRight, float y)
         {
-            cell = Vector3Int.zero;
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            const int cellSize = 2;
+            float x = bottomRight.x - cell.Column * cellSize + 1;
+            float z = bottomRight.z + cell.Row * cellSize - 1;
+            return new Vector3(x, y, z);
+        }
+
+        private static (bool raycast, BoardCell cell) TryGetBoardCell(Ray ray, GameboardDataMono gameboardData)
+        {
+            (bool isRaycastSuccesfull, RaycastHit hit) = Raycast(ray);
+            if (!isRaycastSuccesfull)
             {
-                cell = hit.point;
-                return true;
+                return (false, default);
             }
 
-            return false;
+            Vector3 boardReferencePoint = gameboardData.bottomRight.transform.position;
+            BoardCell boardCell = GetBoardPosition(hit.point, boardReferencePoint);
+            //Debug.Log(hit.point);
+            return (true, boardCell);
+        }
+
+        private static BoardCell GetBoardPosition(Vector3 hitPoint, Vector3 transformPosition)
+        {
+            float positionX = Mathf.Abs(hitPoint.x - transformPosition.x);
+            float positionZ = Mathf.Abs(hitPoint.z - transformPosition.z);
+
+            const int cellSize = 2;
+            float column = positionX / cellSize;
+            float row = positionZ / cellSize;
+
+            var boardCell = new BoardCell(Mathf.CeilToInt(row), Mathf.CeilToInt(column));
+            return boardCell;
+        }
+
+
+        private static (bool, RaycastHit) Raycast(Ray ray)
+        {
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                return (true, hit);
+            }
+
+            return (false, default);
         }
     }
 }

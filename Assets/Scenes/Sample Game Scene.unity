@@ -258,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 930129170}
   m_Layer: 0
-  m_Name: Right Bottom
+  m_Name: Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,14 +355,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975612840}
-  m_LocalRotation: {x: 0.010090701, y: -0.95006067, z: 0.31050465, w: 0.029491277}
-  m_LocalPosition: {x: 10.08406, y: 7.49769, z: 5.774563}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 8, y: 27.26, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 36.199, y: -176.464, z: -0.061}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1110288585
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1110288586}
   m_Layer: 0
-  m_Name: Left Top
+  m_Name: Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,7 +484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1400107763}
   m_Layer: 0
-  m_Name: Left Bottom
+  m_Name: Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,8 +581,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488678143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 7.15, y: 2, z: -11.12}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -598,7 +598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1495575024}
   m_Layer: 0
-  m_Name: Right Top
+  m_Name: Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2334,8 +2334,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameboardData: {fileID: 8370901951137279187}
   mainCamera: {fileID: 975612842}
-  boardMono: {fileID: 3023508392082173853}
-  point: {x: 0, y: 0, z: 0}
   cube: {fileID: 1488678143}
 --- !u!114 &8370901951137279187
 MonoBehaviour:
@@ -2351,10 +2349,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rowCount: 15
   columnCount: 8
-  bottomRight: {fileID: 930129170}
-  bottomLeft: {fileID: 1400107763}
-  topRight: {fileID: 1495575024}
-  topLeft: {fileID: 1110288586}
+  bottomRight: {fileID: 1110288586}
+  bottomLeft: {fileID: 1495575024}
+  topRight: {fileID: 1400107763}
+  topLeft: {fileID: 930129170}
 --- !u!65 &8370901951137279188
 BoxCollider:
   m_ObjectHideFlags: 0
