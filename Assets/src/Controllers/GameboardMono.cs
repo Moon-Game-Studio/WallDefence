@@ -1,5 +1,7 @@
 ﻿using src.Models;
+using src.Turrets;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace src.Controllers
 {
@@ -7,9 +9,11 @@ namespace src.Controllers
     {
         public GameboardDataMono gameboardData;
         public Camera mainCamera;
-        public GameObject cube;
         private float cellSize;
         private float height;
+        private ArenaBalls inputs;
+        private bool isSpawning;
+        private TurretBaseMono turret;
         private float width;
 
         private void Awake()
@@ -17,25 +21,47 @@ namespace src.Controllers
             width = gameboardData.BoardWidth;
             height = gameboardData.BoardHeight;
             cellSize = height / gameboardData.rowCount;
+            inputs = new ArenaBalls();
+            inputs.Player.Fire.performed += FireOnperformed;
         }
-
-        private void Update() { }
 
         private void FixedUpdate()
         {
-            //if (Input.GetMouseButtonDown(0))
+            if (isSpawning)
             {
-                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                (bool isRaycastSuccesfull, BoardCell cell) = TryGetBoardCell(ray, gameboardData);
-                if (isRaycastSuccesfull)
-                {
-                    Vector3 worldCoordinate = ConvertToWorldCoordinate(
-                        cell,
-                        gameboardData.bottomRight.position,
-                        gameObject.transform.position.y);
-                    cube.transform.position = worldCoordinate;
-                }
+                FollowTurretToMouseLocation();
             }
+        }
+
+        private void FireOnperformed(InputAction.CallbackContext callbackContext)
+        {
+            if (isSpawning)
+            {
+                isSpawning = false;
+                turret = null;
+            }
+        }
+
+
+        private void FollowTurretToMouseLocation()
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            (bool isRaycastSuccesfull, BoardCell cell) = TryGetBoardCell(ray, gameboardData);
+            if (isRaycastSuccesfull)
+            {
+                const float turretSpawnY = 0.7f;
+                Vector3 worldCoordinate = ConvertToWorldCoordinate(
+                    cell,
+                    gameboardData.bottomRight.position,
+                    turretSpawnY);
+                turret.transform.position = worldCoordinate;
+            }
+        }
+
+        public void SpawnTurret(TurretBaseMono turretPrefab)
+        {
+            turret = Instantiate(turretPrefab);
+            isSpawning = true;
         }
 
         private static Vector3 ConvertToWorldCoordinate(BoardCell cell, Vector3 bottomRight, float y)
@@ -56,7 +82,6 @@ namespace src.Controllers
 
             Vector3 boardReferencePoint = gameboardData.bottomRight.transform.position;
             BoardCell boardCell = GetBoardPosition(hit.point, boardReferencePoint);
-            //Debug.Log(hit.point);
             return (true, boardCell);
         }
 
