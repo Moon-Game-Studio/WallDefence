@@ -11,8 +11,8 @@ namespace src.Controllers
         public Camera mainCamera;
         private float cellSize;
         private float height;
-        private ArenaBalls inputs;
         private bool isSpawning;
+        private InputAction playerControls;
         private TurretBaseMono turret;
         private float width;
 
@@ -21,8 +21,14 @@ namespace src.Controllers
             width = gameboardData.BoardWidth;
             height = gameboardData.BoardHeight;
             cellSize = height / gameboardData.rowCount;
-            inputs = new ArenaBalls();
-            inputs.Player.Fire.performed += FireOnperformed;
+            playerControls = new InputAction(binding: "<Mouse>/leftButton");
+            playerControls.performed += delegate
+            {
+                if (isSpawning)
+                {
+                    StopFollowing();
+                }
+            };
         }
 
         private void FixedUpdate()
@@ -33,19 +39,26 @@ namespace src.Controllers
             }
         }
 
-        private void FireOnperformed(InputAction.CallbackContext callbackContext)
+        private void OnEnable()
         {
-            if (isSpawning)
-            {
-                isSpawning = false;
-                turret = null;
-            }
+            playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerControls.Disable();
+        }
+
+        private void StopFollowing()
+        {
+            isSpawning = false;
+            turret = null;
         }
 
 
         private void FollowTurretToMouseLocation()
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             (bool isRaycastSuccesfull, BoardCell cell) = TryGetBoardCell(ray, gameboardData);
             if (isRaycastSuccesfull)
             {
