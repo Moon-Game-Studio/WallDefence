@@ -216,6 +216,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f48c6b05502427abd3957abd0ae1d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  target: {fileID: 0}
+  bulletSpawnTransform: {fileID: 0}
+  bulletSpeed: 10
+  attackWaitTime: 0.1
+  keepShooting: 1
 --- !u!1 &5199171584540483024
 GameObject:
   m_ObjectHideFlags: 0
