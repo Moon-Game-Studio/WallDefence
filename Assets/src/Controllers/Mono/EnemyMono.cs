@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace src.Controllers
+namespace src.Controllers.Mono
 {
     public class EnemyMono : MonoBehaviour
     {

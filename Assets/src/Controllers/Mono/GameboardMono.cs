@@ -3,7 +3,7 @@ using src.Turrets;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace src.Controllers
+namespace src.Controllers.Mono
 {
     public class GameboardMono : MonoBehaviour
     {

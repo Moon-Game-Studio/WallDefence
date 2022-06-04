@@ -1,7 +1,7 @@
 using src.Models;
 using UnityEngine;
 
-namespace src.Controllers
+namespace src.Controllers.Mono
 {
     public class MapGridGizmosDrawerMono : MonoBehaviour
     {

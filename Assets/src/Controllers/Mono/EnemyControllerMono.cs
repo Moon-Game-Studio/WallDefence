@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace src.Controllers
+namespace src.Controllers.Mono
 {
     public class EnemyControllerMono : MonoBehaviour
     {
