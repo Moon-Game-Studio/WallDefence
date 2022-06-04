@@ -29,5 +29,7 @@ namespace src.Models
         {
             return Vector3.Distance(bottomRight.transform.position, bottomLeft.transform.position) / columnCount;
         }
+
+        
     }
 }
