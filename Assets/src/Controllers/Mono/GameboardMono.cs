@@ -58,17 +58,14 @@ namespace src.Controllers.Mono
 
         private void FollowTurretToMouseLocation()
         {
-            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            (bool isRaycastSuccesfull, BoardCell cell) = GameBoardHelper.TryGetBoardCell(ray, gameboardData);
-            if (isRaycastSuccesfull)
+            (bool isRaycastSuccesfull, BoardCell cell) = GameBoardHelper.MouseToBoardPosition(mainCamera, gameboardData);
+            if (!isRaycastSuccesfull)
             {
-                const float turretSpawnY = 0.7f;
-                Vector3 worldCoordinate = GameBoardHelper.ConvertToWorldCoordinate(
-                    cell,
-                    gameboardData.bottomRight.position,
-                    turretSpawnY);
-                turret.transform.position = worldCoordinate;
+                return;
             }
+
+            Vector3 worldCoordinate = GameBoardHelper.ConvertToWorldCoordinate(cell, gameboardData.bottomRight.position);
+            turret.transform.position = worldCoordinate;
         }
 
         public void SpawnTurret(TurretBaseMono turretPrefab)

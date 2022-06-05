@@ -12,17 +12,17 @@ namespace src.Controllers.Mono
         public float reloadTime;
 
         public BulletMono bulletPrefab;
-        private EnemyMono enemyMono;
+        private TestEnemyMono testEnemyMono;
 
         
-        public void Setup(EnemyMono target)
+        public void Setup(TestEnemyMono target)
         {
-            enemyMono = target;
+            testEnemyMono = target;
         }
 
         private void Update()
         {
-            if (enemyMono != null)
+            if (testEnemyMono != null)
             {
                 Shoot();
             }

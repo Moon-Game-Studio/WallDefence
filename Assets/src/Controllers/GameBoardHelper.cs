@@ -1,11 +1,14 @@
 ﻿using src.Models;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace src.Controllers
 {
     public static class GameBoardHelper
     {
-        public static Vector3 ConvertToWorldCoordinate(BoardCell cell, Vector3 bottomRight, float y)
+        public const float TurretSpawnY = 0.7f;
+        
+        public static Vector3 ConvertToWorldCoordinate(BoardCell cell, Vector3 bottomRight, float y = TurretSpawnY)
         {
             const int cellSize = 2;
             float x = bottomRight.x - cell.Column * cellSize + 1;
@@ -37,6 +40,12 @@ namespace src.Controllers
 
             var boardCell = new BoardCell(Mathf.CeilToInt(row), Mathf.CeilToInt(column));
             return boardCell;
+        }
+
+        public static (bool raycast, BoardCell cell) MouseToBoardPosition(Camera camera, GameboardDataMono gameboardData)
+        {
+            Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            return TryGetBoardCell(ray, gameboardData);
         }
 
     }

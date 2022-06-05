@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using src.Controllers;
 using src.Controllers.Mono;
 using UnityEngine;
 
@@ -19,7 +18,6 @@ namespace src.Turrets
         private void Start()
         {
             StartCoroutine(nameof(Shoot));
-            //animator.Play("");
         }
 
         private void Update()
@@ -29,14 +27,16 @@ namespace src.Turrets
 
         public IEnumerator Shoot()
         {
-            while (keepShooting)
+            while (true)
             {
-                animator.SetTrigger(AnimationStatusTrigger);
-                SpawnBullet();
+                if (keepShooting)
+                {
+                    animator.SetTrigger(AnimationStatusTrigger);
+                    SpawnBullet();
+                }
+                
                 yield return new WaitForSeconds(attackWaitTime);
             }
-
-            yield return null;
         }
 
         private void SpawnBullet()
